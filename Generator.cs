@@ -43,9 +43,9 @@ namespace InstanceGeneratorProvisioning
             for (var k = 0; k < housingCosts.GetUpperBound(0); k++)
                 Utils.AssignRow(housingCosts, k, Utils.RandomValuesDescending(sizes.ndamagepatterns, 0.0001, 2.0));
             GDXUtils.Parameter2D(db, "hc", "k", "s", housingCosts, "Lagerkostensatz pro ZE und ME in Zustand");
-            GDXUtils.Parameter2D(db, "d", "k", "s", Utils.RandomValuesMatrixRowAscendingDiscrete(2, 3, 0, 62), "Reparaturdauern in ZE");
-            GDXUtils.Parameter2D(db, "bd", "k", "s", Utils.RandomValuesMatrixRowAscendingDiscrete(2, 3, 1, 4), "Bestelldauer in ZE");
-            GDXUtils.Parameter2D(db, "bc", "k", "s", Utils.RandomValuesMatrixRowAscending(2, 3, 0.5, 16.0), "Bestellkostensatz pro ME in Zustand");
+            GDXUtils.Parameter2D(db, "d", "k", "s", Utils.RandomValuesMatrixRowAscendingDiscrete(sizes.ncomponents, sizes.ndamagepatterns, 0, 62), "Reparaturdauern in ZE");
+            GDXUtils.Parameter2D(db, "bd", "k", "s", Utils.RandomValuesMatrixRowAscendingDiscrete(sizes.ncomponents, sizes.ndamagepatterns, 1, 4), "Bestelldauer in ZE");
+            GDXUtils.Parameter2D(db, "bc", "k", "s", Utils.RandomValuesMatrixRowAscending(sizes.ncomponents, sizes.ndamagepatterns, 0.5, 16.0), "Bestellkostensatz pro ME in Zustand");
             Console.Write($"Generated instance with seed {seed} and {db.NrSymbols} symbols: ");
             return db;
         }
@@ -54,7 +54,13 @@ namespace InstanceGeneratorProvisioning
         {
             for (var i = 0; i < numInstances; i++)
             {
-                using (var db = GenerateInstance(ws, new SetSizes {ngoods = 10, ncomponents = 12, ndamagepatterns = 3, nperiods = 1000}, i + 1))
+                using (var db = GenerateInstance(ws, new SetSizes
+                {
+                    ngoods = 10,
+                    ncomponents = 12,
+                    ndamagepatterns = 3,
+                    nperiods = 1000
+                }, i + 1))
                 {
                     Console.WriteLine($"Writing instance {i + 1}...");
                     db.Export($"instance{i + 1}.gdx");
