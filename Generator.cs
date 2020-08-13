@@ -15,20 +15,9 @@ namespace InstanceGeneratorProvisioning
             var setDescriptions = new[] {"Gueter", "Komponenten", "Schadensbilder", "Perioden"};
             GDXUtils.Sets1D(db, setNames, sizes.ToArray(), setDescriptions);
 
-            var ekt = Utils.RandomValuesMatrixRowAscendingDiscrete(2, sizes.ncomponents, 1, 3);
-            var eks = Utils.RandomValuesMatrixDiscrete(2, sizes.ncomponents, 2, 3);
-            for (var k = 0; k < sizes.ncomponents; k++)
-            {
-                ekt[0, k] = 0;
-                eks[0, k] = 0;
-            }
-
-            var ekreal = Utils.RandomValuesMatrixDiscrete(2, 2, 2, 3);
-            for (var k = 0; k < sizes.ncomponents; k++)
-            {
-                ekt[0, k] = 0;
-                eks[0, k] = 0;
-            }
+            var ekt = Utils.RandomValuesMatrixRowAscendingDiscrete(sizes.ngoods, sizes.ncomponents, 1, 3);
+            var eks = Utils.RandomValuesMatrixDiscrete(sizes.ngoods, sizes.ncomponents, 2, 3);
+            var ekreal = Utils.RandomValuesMatrixDiscrete(sizes.ngoods, sizes.ncomponents, 2, 3);
 
             GDXUtils.Parameter2D(db, "ekt", "i", "k", ekt);
             GDXUtils.Parameter2D(db, "eks", "i", "k", eks);
@@ -46,7 +35,9 @@ namespace InstanceGeneratorProvisioning
             GDXUtils.Parameter2D(db, "d", "k", "s", Utils.RandomValuesMatrixRowAscendingDiscrete(sizes.ncomponents, sizes.ndamagepatterns, 0, 62), "Reparaturdauern in ZE");
             GDXUtils.Parameter2D(db, "bd", "k", "s", Utils.RandomValuesMatrixRowAscendingDiscrete(sizes.ncomponents, sizes.ndamagepatterns, 1, 4), "Bestelldauer in ZE");
             GDXUtils.Parameter2D(db, "bc", "k", "s", Utils.RandomValuesMatrixRowAscending(sizes.ncomponents, sizes.ndamagepatterns, 0.5, 16.0), "Bestellkostensatz pro ME in Zustand");
+
             Console.Write($"Generated instance with seed {seed} and {db.NrSymbols} symbols: ");
+
             return db;
         }
 
@@ -56,8 +47,8 @@ namespace InstanceGeneratorProvisioning
             {
                 using (var db = GenerateInstance(ws, new SetSizes
                 {
-                    ngoods = 10,
-                    ncomponents = 12,
+                    ngoods = 4,
+                    ncomponents = 3,
                     ndamagepatterns = 3,
                     nperiods = 1000
                 }, i + 1))

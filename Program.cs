@@ -15,7 +15,7 @@ namespace InstanceGeneratorProvisioning
             var sysDir = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? Config.WinGamsPath : Config.OsxGamsPath;
             var ws = new GAMSWorkspace(Directory.GetCurrentDirectory(), sysDir);
 
-            Generator.BatchGenerateInstances(ws, 2);
+            Generator.BatchGenerateInstances(ws, 10);
 
             //Solver.BatchSolveInstances(ws, 2);
             //Solver.PrintAllResultsInPath(ws, Directory.GetCurrentDirectory());
